@@ -1,0 +1,70 @@
+# Project specific files to ignore
+project.md
+security_recommendations.md
+data/history/
+
+# Environment variables and secrets
+.env
+.env.*
+!env.example
+*.pem
+*.key
+
+# Logs and databases
+logs/
+*.log
+*.db
+*.sqlite3
+
+# Frontend
+frontend/node_modules/
+frontend/.next/
+frontend/build/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+
+# Backend
+__pycache__/
+*.pyc
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Distribution / packaging
+dist/
+*.egg-info/
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Reports
+reports/
+*.pdf
+*.csv
+temp/
+
+# AWS
+.aws/
+credentials
+config
+node_modules
