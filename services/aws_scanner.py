@@ -438,6 +438,48 @@ class AWSScanner:
             logging.error(f"AWS Connection Test Failed: {str(e)}")
             return False
 
+    def scan_service(self, service_type: str) -> List[Dict[str, Any]]:
+        """
+        Scan a specific AWS service for misconfigurations.
+        
+        Args:
+            service_type: The type of AWS service to scan (e.g., 'ec2', 's3', 'iam', 'rds')
+            
+        Returns:
+            List of scan results containing misconfigurations
+            
+        Raises:
+            ValueError: If service_type is not supported
+        """
+        service_type = service_type.lower()
+        logging.info(f"Starting scan for service: {service_type}")
+        
+        scan_methods = {
+            's3': self.scan_s3_buckets,
+            'ec2': self.scan_ec2_instances,
+            'iam': self.scan_iam_users,
+            'rds': self.scan_rds_instances
+        }
+        
+        if service_type not in scan_methods:
+            raise ValueError(f"Unsupported service type: {service_type}. Supported types: {list(scan_methods.keys())}")
+        
+        try:
+            results = scan_methods[service_type]()
+            if not isinstance(results, list):
+                results = [results]
+            
+            # Add service_type to each result if not present
+            for result in results:
+                if 'service_type' not in result:
+                    result['service_type'] = service_type
+            
+            logging.info(f"Completed scan for service: {service_type}")
+            return results
+        except Exception as e:
+            logging.error(f"Error scanning {service_type}: {str(e)}")
+            raise
+
     def scan_all_services(self) -> Dict[str, Any]:
         """Scan all AWS services for misconfigurations"""
         try:
